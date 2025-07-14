@@ -35,3 +35,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+# Ignore environment variables
+.env
+.env.local
+.env.*

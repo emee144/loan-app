@@ -1,33 +1,38 @@
 // firebase.js
+
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   initializeAuth,
   getReactNativePersistence
 } from 'firebase/auth';
+import { getFirestore, setLogLevel } from 'firebase/firestore';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import { getFirestore } from 'firebase/firestore';
-import { setLogLevel } from 'firebase/firestore';
+import Constants from 'expo-constants';
+
+// ✅ Pull environment variables from app.config.js via expo-constants
+const {
+  firebaseApiKey,
+  firebaseAuthDomain,
+  firebaseProjectId,
+  firebaseStorageBucket,
+  firebaseMessagingSenderId,
+  firebaseAppId,
+} = Constants.expoConfig.extra;
+
 const firebaseConfig = {
-
-  apiKey: "AIzaSyBjz7qJlfxFA8MJwE8nMxCKJ8k6sxMvVlE",
-
-  authDomain: "loanapp-711a0.firebaseapp.com",
-
-  projectId: "loanapp-711a0",
-
-  storageBucket: "loanapp-711a0.firebasestorage.app",
-
-  messagingSenderId: "611858337866",
-
-  appId: "1:611858337866:web:e99ca1cffcf352064716b3"
-
+  apiKey: firebaseApiKey,
+  authDomain: firebaseAuthDomain,
+  projectId: firebaseProjectId,
+  storageBucket: firebaseStorageBucket,
+  messagingSenderId: firebaseMessagingSenderId,
+  appId: firebaseAppId,
 };
-setLogLevel('debug'); // add this in firebase.js
+
+setLogLevel('debug');
 
 const app = initializeApp(firebaseConfig);
 
-// ✅ Use AsyncStorage persistence for React Native
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
