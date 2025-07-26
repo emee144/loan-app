@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView, TextInput, Pressable, Alert, ActivityIndicator, Dimensions,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+// AirtimeAndDataScreen.js
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, query, orderBy, getDocs,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
-
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Pressable,
+  ScrollView, TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
 
 const NETWORKS = [
   { label: 'MTN', value: 'MTN' },
@@ -57,7 +66,6 @@ export default function AirtimeAndDataScreen() {
   const [payRef, setPayRef] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-
   const auth = getAuth();
   const db = getFirestore();
   const userId = auth.currentUser?.uid;
@@ -99,21 +107,31 @@ export default function AirtimeAndDataScreen() {
   }, [userId, mode]);
 
   return (
-    <ScrollView
-  contentContainerStyle={{ padding: 16 }}
-  style={{ flex: 1, position: 'relative' }}
->
-
+    <ScrollView contentContainerStyle={{ padding: 16 }} style={{ flex: 1, position: 'relative' }}>
       <Text sx={{ fontSize: 40, fontWeight: 'bold', textAlign: 'center', mb: 16 }}>
         Buy Airtime or Data
       </Text>
 
-      {/* Mode Toggle */}
       <View sx={{ flexDirection: 'row', mb: 20, justifyContent: 'center' }}>
-        <Pressable onPress={() => setMode('airtime')} style={{ backgroundColor: mode === 'airtime' ? '#0f172a' : '#e5e7eb', padding: 10, borderRadius: 6, marginRight: 10 }}>
+        <Pressable
+          onPress={() => setMode('airtime')}
+          style={{
+            backgroundColor: mode === 'airtime' ? '#0f172a' : '#e5e7eb',
+            padding: 10,
+            borderRadius: 6,
+            marginRight: 10,
+          }}
+        >
           <Text style={{ color: mode === 'airtime' ? 'white' : 'black' }}>Airtime</Text>
         </Pressable>
-        <Pressable onPress={() => setMode('data')} style={{ backgroundColor: mode === 'data' ? '#0f172a' : '#e5e7eb', padding: 10, borderRadius: 6 }}>
+        <Pressable
+          onPress={() => setMode('data')}
+          style={{
+            backgroundColor: mode === 'data' ? '#0f172a' : '#e5e7eb',
+            padding: 10,
+            borderRadius: 6,
+          }}
+        >
           <Text style={{ color: mode === 'data' ? 'white' : 'black' }}>Data</Text>
         </Pressable>
       </View>
@@ -135,32 +153,32 @@ export default function AirtimeAndDataScreen() {
         style={inputStyle}
       />
 
-{mode === 'airtime' ? (
-  <TextInput
-    placeholder="Amount"
-    keyboardType="numeric"
-    value={amount}
-    onChangeText={setAmount}
-    style={inputStyle}
-  />
-) : (
-  <>
-    <RNPickerSelect
-      placeholder={{ label: 'Select Data Bundle', value: null }}
-      onValueChange={setAmount}
-      value={amount}
-      items={network ? DATA_BUNDLES_BY_NETWORK[network] || [] : []}
-      style={{ inputIOS: inputStyle, inputAndroid: inputStyle }}
-    />
-    {amount && network && (
-      <Text sx={{ mb: 16, fontWeight: '500', color: '#4b5563', mt: -10 }}>
-        Selected: {
-          DATA_BUNDLES_BY_NETWORK[network]?.find(bundle => bundle.value === amount)?.label || ''
-        }
-      </Text>
-    )}
-  </>
-)}
+      {mode === 'airtime' ? (
+        <TextInput
+          placeholder="Amount"
+          keyboardType="numeric"
+          value={amount}
+          onChangeText={setAmount}
+          style={inputStyle}
+        />
+      ) : (
+        <>
+          <RNPickerSelect
+            placeholder={{ label: 'Select Data Bundle', value: null }}
+            onValueChange={setAmount}
+            value={amount}
+            items={network ? DATA_BUNDLES_BY_NETWORK[network] || [] : []}
+            style={{ inputIOS: inputStyle, inputAndroid: inputStyle }}
+          />
+          {amount && network && (
+            <Text sx={{ mb: 16, fontWeight: '500', color: '#4b5563', mt: -10 }}>
+              Selected: {
+                DATA_BUNDLES_BY_NETWORK[network]?.find(bundle => bundle.value === amount)?.label || ''
+              }
+            </Text>
+          )}
+        </>
+      )}
 
       <Pressable
         onPress={handlePayment}
@@ -224,15 +242,14 @@ export default function AirtimeAndDataScreen() {
                   createdAt: new Date(),
                   paystackRef: reference,
                 });
-setShowSuccess(true); // Show animation
-
-setTimeout(() => {
-  setShowSuccess(false); // Hide animation after 2.5s
-  setPhone('');
-  setAmount('');
-  setNetwork('');
-  fetchHistory();
-}, 2500);
+                setShowSuccess(true);
+                setTimeout(() => {
+                  setShowSuccess(false);
+                  setPhone('');
+                  setAmount('');
+                  setNetwork('');
+                  fetchHistory();
+                }, 2500);
                 Alert.alert('Success', 'Transaction completed successfully');
               } catch (err) {
                 Alert.alert('Error', 'Failed to save transaction');
@@ -250,47 +267,46 @@ setTimeout(() => {
       </Text>
 
       {loading ? (
-        <ActivityIndicator size="small" color="white" />
+        <ActivityIndicator size="small" color="#0f172a" />
       ) : (
         history.map(item => (
           <View
-  key={item.id}
-  sx={{ bg: '#0f172a', borderRadius: 8, p: 12, mb: 8 }}
->
-  <Text sx={{ color: 'white' }}>Network: {item.network}</Text>
-  <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
-  <Text sx={{ color: 'white' }}>Amount: ₦{item.amount}</Text>
-  <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
-</View>
-
+            key={item.id}
+            sx={{ bg: '#0f172a', borderRadius: 8, p: 12, mb: 8 }}
+          >
+            <Text sx={{ color: 'white' }}>Network: {item.network}</Text>
+            <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
+            <Text sx={{ color: 'white' }}>Amount: ₦{item.amount}</Text>
+            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
+          </View>
         ))
       )}
-    {showSuccess && (
-  <View
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 999,
-    }}
-  >
-    <LottieView
-      source={require('../assets/checkmark.json')}
-      autoPlay
-      loop={false}
-      style={{ width: 180, height: 180 }}
-    />
-    <Text style={{ fontSize: 18, color: 'white', fontWeight: 'bold', marginTop: 16 }}>
-      Payment Successful!
-    </Text>
-  </View>
-)}
 
+      {showSuccess && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 999,
+          }}
+        >
+          <LottieView
+            source={require('../assets/checkmark.json')}
+            autoPlay
+            loop={false}
+            style={{ width: 180, height: 180 }}
+          />
+          <Text style={{ fontSize: 18, color: 'white', fontWeight: 'bold', marginTop: 16 }}>
+            Payment Successful!
+          </Text>
+        </View>
+      )}
     </ScrollView>
   );
 }

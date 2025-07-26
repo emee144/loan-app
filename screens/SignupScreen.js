@@ -1,12 +1,11 @@
-// SignupScreen.js
-import React, { useState } from 'react';
-import { TextInput, Alert, Image, View as RNView } from 'react-native';
-import { View, Text, Pressable } from 'dripsy';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable, Text, View } from 'dripsy';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase';
-import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Alert, Image, View as RNView, TextInput } from 'react-native';
 import LoanWaveLogo from '../assets/loanwave.png';
+import { auth, db } from '../firebase';
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -49,10 +48,21 @@ export default function SignupScreen({ navigation }) {
         Let's get started
       </Text>
 
-      <CustomInput placeholder="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" />
-      <CustomInput placeholder="Phone number (optional)" value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+      <CustomInput
+        placeholder="Email address"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
 
-      {/* Password with Eye Icon */}
+      <CustomInput
+        placeholder="Phone number (optional)"
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
+      />
+
       <RNView style={inputWrapper}>
         <TextInput
           placeholder="Password"

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, ActivityIndicator } from 'react-native';
-import { View, Text } from 'dripsy';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView } from 'react-native';
 
 const LoanScreen = () => {
   const [loans, setLoans] = useState([]);
@@ -51,12 +51,12 @@ const LoanScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 3 }}>
+      <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 3, color: 'white' }}>
         Your Loan Applications
       </Text>
 
       {loans.length === 0 ? (
-        <Text>No loan applications found.</Text>
+        <Text sx={{ color: 'white' }}>No loan applications found.</Text>
       ) : (
         loans.map((loan, index) => (
           <View
@@ -74,17 +74,14 @@ const LoanScreen = () => {
               Loan #{index + 1}
             </Text>
             <Text sx={{ color: 'white' }}>
-              Amount:{' '}
-              ₦
+              Amount: ₦
               {loan.loanAmount ? Number(loan.loanAmount).toLocaleString() : 'N/A'}
-
             </Text>
             <Text sx={{ color: 'white' }}>
               Purpose: {loan.loanPurpose || 'N/A'}
             </Text>
             <Text sx={{ color: 'white' }}>
               Term: {loan.repaymentMonths || 'N/A'} months
-
             </Text>
             <Text sx={{ color: 'white' }}>
               Status: {loan.status || 'pending'}

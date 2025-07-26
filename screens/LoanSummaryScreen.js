@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { ScrollView, Pressable, Alert } from 'react-native';
-import { View, Text } from 'dripsy';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
+import { doc, getFirestore, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { Alert, Pressable, ScrollView } from 'react-native';
 
 const LoanSummaryScreen = () => {
   const navigation = useNavigation();
@@ -60,31 +60,26 @@ const LoanSummaryScreen = () => {
           Loan Summary
         </Text>
 
-        {/* Loan Amount */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Loan Amount</Text>
           <Text sx={{ color: 'white' }}>₦{Number(data.amount).toLocaleString()}</Text>
         </View>
 
-        {/* Purpose */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Purpose</Text>
           <Text sx={{ color: 'white' }}>{data.loanPurpose || 'N/A'}</Text>
         </View>
 
-        {/* Repayment */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Repayment Term</Text>
           <Text sx={{ color: 'white' }}>{data.duration} months</Text>
         </View>
 
-        {/* Monthly Repayment */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Monthly Repayment</Text>
           <Text sx={{ color: 'white' }}>₦{Number(data.monthlyRepayment).toLocaleString()}</Text>
         </View>
 
-        {/* Next of Kin */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Next of Kin</Text>
           <Text sx={{ color: 'white' }}>Name: {data.nextOfKinName}</Text>
@@ -92,7 +87,6 @@ const LoanSummaryScreen = () => {
           <Text sx={{ color: 'white' }}>Relationship: {data.nextOfKinRelationship}</Text>
         </View>
 
-        {/* Bank Details */}
         <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Bank Details</Text>
           <Text sx={{ color: 'white' }}>Bank: {data.bankName}</Text>
@@ -100,7 +94,6 @@ const LoanSummaryScreen = () => {
           <Text sx={{ color: 'white' }}>BVN: {data.bvn}</Text>
         </View>
 
-        {/* Optional Card */}
         {data.cardNumber && (
           <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
             <Text sx={{ color: 'white', fontWeight: 'bold' }}>Card Info</Text>
@@ -111,7 +104,6 @@ const LoanSummaryScreen = () => {
           </View>
         )}
 
-        {/* Submit Button */}
         <Pressable
           onPress={handleSubmit}
           style={{

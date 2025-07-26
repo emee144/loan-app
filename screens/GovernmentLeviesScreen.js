@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView,
-  TextInput,
-  Pressable,
-  Alert,
-  Dimensions,
-  ActivityIndicator,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore,
-  collection,
   addDoc,
-  query,
-  orderBy,
+  collection,
   getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Pressable,
+  ScrollView,
+  TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
 
 const STATES = [
   'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa',
@@ -140,7 +140,12 @@ export default function GovernmentLeviesScreen() {
 
       <Pressable
         onPress={handlePayment}
-        style={{ backgroundColor: '#0f172a', borderRadius: 8, padding: 16, marginTop: 20 }}
+        style={{
+          backgroundColor: '#0f172a',
+          borderRadius: 8,
+          padding: 16,
+          marginTop: 20,
+        }}
       >
         <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
           Pay with Paystack
@@ -181,7 +186,7 @@ export default function GovernmentLeviesScreen() {
                   </script>
                 </body>
               </html>
-            `
+            `,
           }}
           onMessage={async (event) => {
             const data = event.nativeEvent.data;
@@ -221,27 +226,29 @@ export default function GovernmentLeviesScreen() {
       )}
 
       {showSuccess && (
-        <View style={{ alignItems: 'center', marginTop: 20 }}>
+        <View sx={{ alignItems: 'center', mt: 20 }}>
           <LottieView
             source={require('../assets/checkmark.json')}
             autoPlay
             loop={false}
             style={{ width: 150, height: 150 }}
           />
-          <Text style={{ fontSize: 16, color: 'green', fontWeight: 'bold', marginTop: 10 }}>
+          <Text sx={{ fontSize: 16, color: 'green', fontWeight: 'bold', mt: 10 }}>
             Payment Successful!
           </Text>
         </View>
       )}
 
-      <Text sx={{ fontSize: 20, fontWeight: 'bold', mt: 32, mb: 12 }}>Payment History</Text>
+      <Text sx={{ fontSize: 20, fontWeight: 'bold', mt: 32, mb: 12 }}>
+        Payment History
+      </Text>
 
       {loading ? (
         <ActivityIndicator size="small" color="#000" />
       ) : history.length === 0 ? (
         <Text>No past transactions found.</Text>
       ) : (
-        history.map(item => (
+        history.map((item) => (
           <View
             key={item.id}
             sx={{
@@ -258,7 +265,9 @@ export default function GovernmentLeviesScreen() {
             <Text sx={{ color: 'white' }}>Name: {item.name}</Text>
             <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
             <Text sx={{ color: 'white' }}>Amount: ₦{item.amount}</Text>
-            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
+            <Text sx={{ color: 'white' }}>
+              Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}
+            </Text>
           </View>
         ))
       )}

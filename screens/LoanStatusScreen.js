@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, ActivityIndicator } from 'react-native';
-import { View, Text } from 'dripsy';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
-import LoanStatusTracker from '../components/LoanStatusTracker';
 import {
-  getFirestore,
   collection,
-  query,
-  orderBy,
   getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView } from 'react-native';
+import LoanStatusTracker from '../components/LoanStatusTracker';
 
 export default function LoanStatusScreen() {
   const [loans, setLoans] = useState([]);
@@ -60,7 +60,7 @@ export default function LoanStatusScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16 }}>
+      <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16, color: 'white' }}>
         My Loan Applications
       </Text>
 
@@ -69,13 +69,13 @@ export default function LoanStatusScreen() {
       ) : error ? (
         <Text sx={{ color: 'red', textAlign: 'center', mt: 20 }}>{error}</Text>
       ) : loans.length === 0 ? (
-        <Text sx={{ textAlign: 'center', mt: 20 }}>No loan applications found.</Text>
+        <Text sx={{ textAlign: 'center', mt: 20, color: 'white' }}>No loan applications found.</Text>
       ) : (
         loans.map(loan => (
           <View
             key={loan.id}
             sx={{
-              bg: 'green',
+              bg: '#0f172a',
               borderRadius: 8,
               p: 12,
               mb: 16,
@@ -96,7 +96,7 @@ export default function LoanStatusScreen() {
               Status: {loan.status || 'submitted'}
             </Text>
 
-            {/* ✅ Add visual progress bar here */}
+            {/* Visual status tracker */}
             <LoanStatusTracker status={loan.status || 'submitted'} />
           </View>
         ))

@@ -15,7 +15,7 @@ export default {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.emee144.loanapp' // ✅ ADDED THIS LINE
+      bundleIdentifier: 'com.emee144.loanapp',
     },
     android: {
       package: 'com.emee144.loanapp',

@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView, TextInput, Pressable, Alert, Dimensions,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, query, orderBy, getDocs,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
+import { useEffect, useState } from 'react';
+import {
+  Alert, Dimensions,
+  Pressable,
+  ScrollView, TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
 
 const ISPS = [
   { label: 'Spectranet', value: 'Spectranet' },
@@ -49,19 +56,20 @@ export default function InternetScreen() {
   const auth = getAuth();
   const db = getFirestore();
   const userId = auth.currentUser?.uid;
+
   const formatModemNumber = (input, isp) => {
-  const digits = input.replace(/\D/g, '');
-  if (isp === 'Spectranet') {
-    return digits.slice(0, 10); // 10 digits, no spacing
-  } else if (isp === 'Smile') {
-    const max = digits.slice(0, 12);
-    return max.replace(/(\d{3})(?=\d)/g, '$1 ');
-  } else if (isp === 'Airtel 4G') {
-    const max = digits.slice(0, 15);
-    return max.replace(/(.{4})/g, '$1 ').trim(); // 4-4-4-3
-  }
-  return digits;
-};
+    const digits = input.replace(/\D/g, '');
+    if (isp === 'Spectranet') {
+      return digits.slice(0, 10);
+    } else if (isp === 'Smile') {
+      const max = digits.slice(0, 12);
+      return max.replace(/(\d{3})(?=\d)/g, '$1 ');
+    } else if (isp === 'Airtel') {
+      const max = digits.slice(0, 15);
+      return max.replace(/(.{4})/g, '$1 ').trim();
+    }
+    return digits;
+  };
 
   const formatPhone = (input) => {
     const digits = input.replace(/\D/g, '').slice(0, 11);
@@ -107,6 +115,7 @@ export default function InternetScreen() {
         onValueChange={(val) => {
           setProvider(val);
           setPlanValue('');
+          setIsp(val);
         }}
         items={ISPS}
         value={provider}
@@ -123,14 +132,13 @@ export default function InternetScreen() {
         />
       )}
 
- <TextInput
-  placeholder="Modem / Account Number"
-  keyboardType="numeric"
-  value={formatModemNumber(modemNumber, isp)}
-  onChangeText={text => setModemNumber(text.replace(/\D/g, ''))}
-  style={inputStyle}
-/>
-
+      <TextInput
+        placeholder="Modem / Account Number"
+        keyboardType="numeric"
+        value={formatModemNumber(modemNumber, isp)}
+        onChangeText={text => setModemNumber(text.replace(/\D/g, ''))}
+        style={inputStyle}
+      />
 
       <TextInput
         placeholder="Phone Number"
@@ -143,7 +151,12 @@ export default function InternetScreen() {
 
       <Pressable
         onPress={handlePayment}
-        style={{ backgroundColor: '#0f172a', borderRadius: 8, padding: 16, marginTop: 20 }}
+        style={{
+          backgroundColor: 'green',
+          borderRadius: 8,
+          padding: 16,
+          marginTop: 20
+        }}
       >
         <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
           Pay with Paystack
@@ -159,8 +172,10 @@ export default function InternetScreen() {
           source={{
             html: `
               <html>
-                <head><meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script src="https://js.paystack.co/v1/inline.js"></script></head>
+                <head>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <script src="https://js.paystack.co/v1/inline.js"></script>
+                </head>
                 <body>
                   <button id="payBtn" onclick="payWithPaystack()">Pay Now</button>
                   <script>
@@ -248,13 +263,22 @@ export default function InternetScreen() {
         internetHistory.map((item) => (
           <View
             key={item.id}
-            sx={{ bg: '#0f172a', borderRadius: 8, p: 12, mb: 8, borderLeftWidth: 4, borderLeftColor: '#10b981' }}
+            sx={{
+              bg: 'green',
+              borderRadius: 8,
+              p: 12,
+              mb: 8,
+              borderLeftWidth: 4,
+              borderLeftColor: '#10b981'
+            }}
           >
             <Text sx={{ color: 'white' }}>Provider: {item.provider}</Text>
             <Text sx={{ color: 'white' }}>Plan: ₦{item.plan}</Text>
             <Text sx={{ color: 'white' }}>Modem ID: {item.modemNumber}</Text>
             <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
-            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
+            <Text sx={{ color: 'white' }}>
+              Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}
+            </Text>
           </View>
         ))
       )}
@@ -269,6 +293,6 @@ const inputStyle = {
   padding: 12,
   marginBottom: 16,
   fontSize: 16,
-  textColor: 'white',
+  color: 'white',
   backgroundColor: 'grey',
 };

@@ -35,7 +35,11 @@ export default function BillsScreen() {
   };
 
   return (
+<<<<<<< HEAD
     <View sx={{ flex: 1, bg: '#0f172a' }}>
+=======
+    <View sx={{ flex: 1, bg: '#f9fafb' }}>
+>>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <Text
           sx={{
@@ -43,7 +47,11 @@ export default function BillsScreen() {
             fontWeight: 'bold',
             mb: 24,
             textAlign: 'center',
+<<<<<<< HEAD
             color: 'white',
+=======
+            color: '#059669', // darker green
+>>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
           }}
         >
           Pay Bills
@@ -54,7 +62,11 @@ export default function BillsScreen() {
             key={index}
             onPress={() => handlePress(item.name)}
             style={{
+<<<<<<< HEAD
               backgroundColor: 'blue', 
+=======
+              backgroundColor: 'green', 
+>>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
               borderRadius: 12,
               padding: 16,
               marginBottom: 16,
@@ -72,7 +84,11 @@ export default function BillsScreen() {
               style={{
                 fontSize: 20,
                 marginLeft: 12,
+<<<<<<< HEAD
                 color: 'white', 
+=======
+                color: 'white', // strong green
+>>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
                 fontWeight: 'bold', // very bold
               }}
             >

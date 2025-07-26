@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Text, useSx, View } from 'dripsy';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
-  TextInput,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
-  Platform,
-  KeyboardAvoidingView,
-  Alert,
+  TextInput,
 } from 'react-native';
-import { View, Text, useSx } from 'dripsy';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
 
 const NIGERIAN_STATES = [
   'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue',
@@ -153,7 +153,6 @@ export default function LoanFormScreen({ navigation }) {
           style={inputStyle}
         />
 
-        {/* 💡 Loan Calculator Result */}
         {monthlyRepayment && (
           <View sx={{ mb: 16, bg: '#f0fdf4', p: 12, borderRadius: 8 }}>
             <Text sx={{ color: '#15803d', fontWeight: 'bold', fontSize: 16 }}>
@@ -162,21 +161,21 @@ export default function LoanFormScreen({ navigation }) {
           </View>
         )}
 
-       <RNPickerSelect
-  placeholder={{ label: 'Select Repayment Method', value: null }}
-  onValueChange={(value) => {
-    setRepaymentMethod(value);
-    const num = parseInt(value); // assumes value like "3 months"
-    if (!isNaN(num)) setDuration(num.toString());
-  }}
-  items={[
-    { label: '1 month', value: '1 month' },
-    { label: '2 months', value: '2 months' },
-    { label: '3 months', value: '3 months' },
-  ]}
-  value={repaymentMethod}
-  style={pickerStyle}
-/>
+        <RNPickerSelect
+          placeholder={{ label: 'Select Repayment Method', value: null }}
+          onValueChange={(value) => {
+            setRepaymentMethod(value);
+            const num = parseInt(value);
+            if (!isNaN(num)) setDuration(num.toString());
+          }}
+          items={[
+            { label: '1 month', value: '1 month' },
+            { label: '2 months', value: '2 months' },
+            { label: '3 months', value: '3 months' },
+          ]}
+          value={repaymentMethod}
+          style={pickerStyle}
+        />
 
         <TextInput
           placeholder="Monthly Income"
@@ -198,7 +197,6 @@ export default function LoanFormScreen({ navigation }) {
           style={pickerStyle}
         />
 
-        {/* Repayment Date Picker */}
         <Pressable
           onPress={() => setShowRepaymentPicker(true)}
           style={sx({ bg: '#3b82f6', borderRadius: 8, p: 12, mb: 16 })}
@@ -220,7 +218,6 @@ export default function LoanFormScreen({ navigation }) {
           />
         )}
 
-        {/* Date of Birth Picker */}
         <Pressable
           onPress={() => setShowDobPicker(true)}
           style={sx({ bg: '#3b82f6', borderRadius: 8, p: 12, mb: 16 })}
@@ -274,7 +271,6 @@ export default function LoanFormScreen({ navigation }) {
   );
 }
 
-// Styles
 const inputStyle = {
   borderWidth: 1,
   borderColor: '#ccc',

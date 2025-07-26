@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, Image, Alert, View as RNView } from 'react-native';
-import { View, Text, Pressable } from 'dripsy';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import LoanWaveLogo from '../assets/loanwave.png';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Pressable, Text, View } from 'dripsy';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { Alert, Image, View as RNView, TextInput } from 'react-native';
+import LoanWaveLogo from '../assets/loanwave.png';
+import { auth } from '../firebase';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -57,7 +57,14 @@ export default function LoginScreen({ navigation }) {
         Welcome back!
       </Text>
 
-      <CustomInput placeholder="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" />
+      {/* Email Input */}
+      <CustomInput
+        placeholder="Email address"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
 
       {/* Password with toggle icon */}
       <RNView style={inputWrapper}>
@@ -86,10 +93,12 @@ export default function LoginScreen({ navigation }) {
         <Text sx={{ color: '#cbd5e1' }}>Remember Me</Text>
       </Pressable>
 
+      {/* Login Button */}
       <Pressable onPress={handleLogin} sx={button}>
         <Text sx={buttonText}>Login</Text>
       </Pressable>
 
+      {/* Signup Navigation */}
       <Pressable onPress={() => navigation.navigate('Signup')} sx={{ mt: 16 }}>
         <Text sx={{ color: '#38bdf8', textAlign: 'center' }}>
           Don't have an account? Sign up

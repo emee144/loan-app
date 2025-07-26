@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView, TextInput, Pressable, Alert, ActivityIndicator, Dimensions,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, query, orderBy, getDocs,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Pressable,
+  ScrollView, TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
 
 const PROVIDERS = [
   { label: 'IKEDC', value: 'IKEDC' },
@@ -255,7 +264,9 @@ export default function ElectricityScreen() {
             <Text sx={{ color: 'white' }}>Meter: {item.meterNumber}</Text>
             <Text sx={{ color: 'white' }}>Amount: ₦{item.amount}</Text>
             <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
-            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
+            <Text sx={{ color: 'white' }}>
+              Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}
+            </Text>
           </View>
         ))
       )}

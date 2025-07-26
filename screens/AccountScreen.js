@@ -7,10 +7,10 @@ import { Alert, Pressable, TextInput } from 'react-native';
 
 export default function AccountScreen() {
   const sx = useSx();
+  const navigation = useNavigation();
   const auth = getAuth();
   const db = getFirestore();
   const user = auth.currentUser;
-  const navigation = useNavigation();
 
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState('');
@@ -44,9 +44,7 @@ export default function AccountScreen() {
       }
 
       const docRef = doc(db, 'users', user.uid);
-      await updateDoc(docRef, {
-        phone,
-      });
+      await updateDoc(docRef, { phone });
 
       Alert.alert('Updated successfully!');
     } catch (e) {
@@ -100,7 +98,7 @@ export default function AccountScreen() {
           />
 
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>Full Name</Text>
-          <Text sx={{ mb: 3 }}>{fullName}</Text>
+          <Text sx={{ mb: 3 }}>{fullName || 'Not provided'}</Text>
 
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>Phone Number</Text>
           <TextInput

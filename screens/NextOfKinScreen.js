@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Text, useSx, View } from 'dripsy';
+import { useEffect, useState } from 'react';
 import {
-  TextInput,
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
-  Platform,
-  KeyboardAvoidingView,
-  Alert,
+  TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
-import { View, Text, useSx } from 'dripsy';
 import RNPickerSelect from 'react-native-picker-select';
-import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function NextOfKinScreen() {
   const sx = useSx();
   const navigation = useNavigation();
   const route = useRoute();
 
-useEffect(() => {
-  console.log('🧾 All data in NextOfKinScreen:', route.params);
-}, []);
+  useEffect(() => {
+    console.log('🧾 All data in NextOfKinScreen:', route.params);
+  }, []);
 
   // Retrieve previous data (loan info)
   const previousData = route.params || {};

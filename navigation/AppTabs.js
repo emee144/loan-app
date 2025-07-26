@@ -1,17 +1,16 @@
 // navigation/AppTabs.js
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import LoanScreen from '../screens/LoanScreen';
-import BillsStack from './BillsStack';
 import AccountScreen from '../screens/AccountScreen';
-import ApplyStack from './ApplyStack'; 
+import LoanScreen from '../screens/LoanScreen';
+import ApplyStack from './ApplyStack'; // You preferred this over WelcomeScreen
+import BillsStack from './BillsStack';
 
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
- return (
+  return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
@@ -19,10 +18,12 @@ export default function AppTabs() {
         tabBarInactiveTintColor: 'gray',
         tabBarIcon: ({ color, size }) => {
           let iconName;
+
           if (route.name === 'Loan') iconName = 'cash-outline';
           else if (route.name === 'Bills') iconName = 'receipt-outline';
           else if (route.name === 'Account') iconName = 'person-circle-outline';
           else if (route.name === 'Apply') iconName = 'document-text-outline';
+
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
