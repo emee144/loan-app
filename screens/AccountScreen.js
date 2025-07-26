@@ -63,8 +63,8 @@ export default function AccountScreen() {
   };
 
   return (
-    <View sx={{ flex: 1, bg: 'white', p: 16 }}>
-      <Text sx={{ fontSize: 28, fontWeight: 'bold', mb: 24, textAlign: 'center' }}>
+    <View sx={{ flex: 1, bg: '#0f172a', p: 16 }}>
+      <Text sx={{ fontSize: 28, color: 'white', fontWeight: 'bold', mb: 24, textAlign: 'center' }}>
         My Account
       </Text>
 

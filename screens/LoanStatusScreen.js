@@ -60,7 +60,7 @@ export default function LoanStatusScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16, color: 'white' }}>
+      <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16, color: '#0f172a' }}>
         My Loan Applications
       </Text>
 

@@ -1,25 +1,16 @@
 // AirtimeAndDataScreen.js
-import { Text, View } from 'dripsy';
+import React, { useState, useEffect } from 'react';
+import {
+  ScrollView, TextInput, Pressable, Alert, ActivityIndicator, Dimensions,
+} from 'react-native';
+import { View, Text } from 'dripsy';
+import RNPickerSelect from 'react-native-picker-select';
 import { getAuth } from 'firebase/auth';
 import {
-  addDoc,
-  collection,
-  getDocs,
-  getFirestore,
-  orderBy,
-  query,
+  getFirestore, collection, addDoc, query, orderBy, getDocs,
 } from 'firebase/firestore';
-import LottieView from 'lottie-react-native';
-import { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-  Pressable,
-  ScrollView, TextInput,
-} from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import { WebView } from 'react-native-webview';
+import LottieView from 'lottie-react-native';
 
 const NETWORKS = [
   { label: 'MTN', value: 'MTN' },

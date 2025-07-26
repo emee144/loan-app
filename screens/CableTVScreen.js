@@ -8,7 +8,6 @@ import { getAuth } from 'firebase/auth';
 import {
   getFirestore, collection, addDoc, query, orderBy, getDocs,
 } from 'firebase/firestore';
-
 import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
 
@@ -142,11 +141,7 @@ export default function CableTVScreen() {
       <Pressable
         onPress={handlePayment}
         style={{
-<<<<<<< HEAD
           backgroundColor: '#0f172a',
-=======
-          backgroundColor: 'green',
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
           borderRadius: 8,
           padding: 16,
           marginTop: 20,
@@ -201,14 +196,13 @@ export default function CableTVScreen() {
               const reference = data.split(':')[1];
               setShowPaystack(false);
 
-              const currentUserId = getAuth().currentUser?.uid;
-              if (!currentUserId) {
+              if (!userId) {
                 Alert.alert('Error', 'User not logged in. Please sign in again.');
                 return;
               }
 
               try {
-                const ref = collection(db, 'users', currentUserId, 'cablePurchases');
+                const ref = collection(db, 'users', userId, 'cablePurchases');
                 await addDoc(ref, {
                   provider,
                   package: packageValue,
@@ -265,11 +259,7 @@ export default function CableTVScreen() {
           <View
             key={item.id}
             sx={{
-<<<<<<< HEAD
               bg: '#0f172a',
-=======
-              bg: 'green',
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
               borderRadius: 8,
               textColor: 'white',
               p: 12,
@@ -278,19 +268,13 @@ export default function CableTVScreen() {
               borderLeftColor: '#10b981',
             }}
           >
-<<<<<<< HEAD
             <Text sx={{ color: 'white' }}>Provider: {item.provider}</Text>
             <Text sx={{ color: 'white' }}>Package: ₦{item.package}</Text>
             <Text sx={{ color: 'white' }}>Smartcard: {item.smartcard}</Text>
             <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
-            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
-=======
-            <Text>Provider: {item.provider}</Text>
-            <Text>Package: ₦{item.package}</Text>
-            <Text>Smartcard: {item.smartcard}</Text>
-            <Text>Phone: {item.phone}</Text>
-            <Text>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
+            <Text sx={{ color: 'white' }}>
+              Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}
+            </Text>
           </View>
         ))
       )}

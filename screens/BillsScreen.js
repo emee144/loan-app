@@ -1,8 +1,7 @@
-import React from 'react';
-import { ScrollView, Pressable } from 'react-native';
-import { View, Text } from 'dripsy';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { Text, View } from 'dripsy';
+import { Pressable, ScrollView } from 'react-native';
 
 const bills = [
   { name: 'Airtime & Data', icon: 'phone-portrait-outline' },
@@ -35,11 +34,8 @@ export default function BillsScreen() {
   };
 
   return (
-<<<<<<< HEAD
-    <View sx={{ flex: 1, bg: '#0f172a' }}>
-=======
-    <View sx={{ flex: 1, bg: '#f9fafb' }}>
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
+    // dark navy background 
+    <View sx={{ flex: 1, bg: '#0f172a' }}> 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <Text
           sx={{
@@ -47,11 +43,7 @@ export default function BillsScreen() {
             fontWeight: 'bold',
             mb: 24,
             textAlign: 'center',
-<<<<<<< HEAD
-            color: 'white',
-=======
-            color: '#059669', // darker green
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
+            color: '#059669',
           }}
         >
           Pay Bills
@@ -62,11 +54,7 @@ export default function BillsScreen() {
             key={index}
             onPress={() => handlePress(item.name)}
             style={{
-<<<<<<< HEAD
-              backgroundColor: 'blue', 
-=======
-              backgroundColor: 'green', 
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
+              backgroundColor: '#065f46', 
               borderRadius: 12,
               padding: 16,
               marginBottom: 16,
@@ -84,12 +72,8 @@ export default function BillsScreen() {
               style={{
                 fontSize: 20,
                 marginLeft: 12,
-<<<<<<< HEAD
-                color: 'white', 
-=======
-                color: 'white', // strong green
->>>>>>> ce05d2edea089de25d71584dcb8be55e5f57943e
-                fontWeight: 'bold', // very bold
+                color: 'white',
+                fontWeight: 'bold',
               }}
             >
               {item.name}
