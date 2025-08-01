@@ -1,15 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView, TextInput, Pressable, Alert, Dimensions,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, query, orderBy, getDocs,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
+import { useEffect, useState } from 'react';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
+
+const logo = require('../assets/loanwave.png');
 
 const PROVIDERS = [
   { label: 'DSTV', value: 'DSTV' },
@@ -96,6 +108,13 @@ export default function CableTVScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Image
+          source={logo}
+          style={{ width: 120, height: 40, resizeMode: 'contain' }}
+        />
+      </View>
+
       <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 24, textAlign: 'center' }}>
         Pay for Cable TV
       </Text>

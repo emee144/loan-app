@@ -22,7 +22,6 @@ export default function NextOfKinScreen() {
     console.log('🧾 All data in NextOfKinScreen:', route.params);
   }, []);
 
-  // Retrieve previous data (loan info)
   const previousData = route.params || {};
 
   const [fullName, setFullName] = useState('');
@@ -64,69 +63,75 @@ export default function NextOfKinScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
       >
-        <ScrollView contentContainerStyle={sx({ p: 16, bg: 'white', pb: 40 })}>
-          <Text sx={{ fontSize: 26, fontWeight: 'bold', textAlign: 'center', mb: 24 }}>
-            Next of Kin Details
-          </Text>
-
-          <TextInput
-            placeholder="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            style={inputStyle}
-          />
-
-          <View sx={{ mb: 16 }}>
-            <RNPickerSelect
-              placeholder={{ label: 'Select Relationship', value: null }}
-              onValueChange={setRelationship}
-              items={[
-                { label: 'Parent', value: 'Parent' },
-                { label: 'Sibling', value: 'Sibling' },
-                { label: 'Spouse', value: 'Spouse' },
-                { label: 'Child', value: 'Child' },
-                { label: 'Friend', value: 'Friend' },
-                { label: 'Other', value: 'Other' },
-              ]}
-              value={relationship}
-              style={pickerStyle}
-            />
-          </View>
-
-          <TextInput
-            placeholder="Phone Number"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-            style={inputStyle}
-          />
-
-          <TextInput
-            placeholder="Email (optional)"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-            style={inputStyle}
-          />
-
-          <TextInput
-            placeholder="Address (optional)"
-            value={address}
-            onChangeText={setAddress}
-            style={[inputStyle, { height: 80, textAlignVertical: 'top' }]}
-            multiline
-          />
-
-          <Pressable
-            onPress={handleSubmit}
-            style={sx({ bg: 'green', p: 16, borderRadius: 8, mt: 24 })}
-          >
-            <Text sx={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
-              Continue
+        <View style={{ flex: 1, backgroundColor: '#0f172a' }}>
+          <ScrollView contentContainerStyle={sx({ p: 16, pb: 40 })}>
+            <Text sx={{ fontSize: 26, fontWeight: 'bold', textAlign: 'center', mb: 24, color: '#059669' }}>
+              Next of Kin Details
             </Text>
-          </Pressable>
-        </ScrollView>
+
+            <TextInput
+              placeholder="Full Name"
+              value={fullName}
+              onChangeText={setFullName}
+              style={inputStyle}
+              placeholderTextColor="#94a3b8"
+            />
+
+            <View sx={{ mb: 16 }}>
+              <RNPickerSelect
+                placeholder={{ label: 'Select Relationship', value: null }}
+                onValueChange={setRelationship}
+                items={[
+                  { label: 'Parent', value: 'Parent' },
+                  { label: 'Sibling', value: 'Sibling' },
+                  { label: 'Spouse', value: 'Spouse' },
+                  { label: 'Child', value: 'Child' },
+                  { label: 'Friend', value: 'Friend' },
+                  { label: 'Other', value: 'Other' },
+                ]}
+                value={relationship}
+                style={pickerStyle}
+              />
+            </View>
+
+            <TextInput
+              placeholder="Phone Number"
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+              style={inputStyle}
+              placeholderTextColor="#94a3b8"
+            />
+
+            <TextInput
+              placeholder="Email (optional)"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
+              style={inputStyle}
+              placeholderTextColor="#94a3b8"
+            />
+
+            <TextInput
+              placeholder="Address (optional)"
+              value={address}
+              onChangeText={setAddress}
+              style={[inputStyle, { height: 80, textAlignVertical: 'top' }]}
+              multiline
+              placeholderTextColor="#94a3b8"
+            />
+
+            <Pressable
+              onPress={handleSubmit}
+              style={sx({ bg: '#15803d', p: 16, borderRadius: 8, mt: 24 })}
+            >
+              <Text sx={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
+                Continue
+              </Text>
+            </Pressable>
+          </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
@@ -134,12 +139,13 @@ export default function NextOfKinScreen() {
 
 const inputStyle = {
   borderWidth: 1,
-  borderColor: '#ccc',
+  borderColor: '#334155',
   borderRadius: 8,
   padding: 12,
   marginBottom: 16,
   fontSize: 16,
-  backgroundColor: 'white',
+  backgroundColor: '#1e293b',
+  color: 'white',
 };
 
 const pickerStyle = {

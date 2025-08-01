@@ -16,6 +16,7 @@ export default function AccountScreen() {
   const [phone, setPhone] = useState('');
   const [fullName, setFullName] = useState('');
   const [bvn, setBvn] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,17 +39,23 @@ export default function AccountScreen() {
   }, [user]);
 
   const handleUpdate = async () => {
+    setIsSaving(true);
     try {
       if (email !== user.email) {
         await updateEmail(user, email);
       }
 
       const docRef = doc(db, 'users', user.uid);
-      await updateDoc(docRef, { phone });
+      await updateDoc(docRef, {
+        phone,
+        fullName,
+      });
 
       Alert.alert('Updated successfully!');
     } catch (e) {
       Alert.alert('Update Failed', e.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -81,6 +88,7 @@ export default function AccountScreen() {
             elevation: 3,
           }}
         >
+          {/* Email Input */}
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>Email</Text>
           <TextInput
             value={email}
@@ -97,9 +105,23 @@ export default function AccountScreen() {
             })}
           />
 
+          {/* Full Name Input */}
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>Full Name</Text>
-          <Text sx={{ mb: 3 }}>{fullName || 'Not provided'}</Text>
+          <TextInput
+            value={fullName}
+            onChangeText={setFullName}
+            autoCapitalize="words"
+            style={sx({
+              bg: 'white',
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 8,
+              p: 10,
+              mb: 3,
+            })}
+          />
 
+          {/* Phone Number */}
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>Phone Number</Text>
           <TextInput
             value={phone}
@@ -115,6 +137,7 @@ export default function AccountScreen() {
             })}
           />
 
+          {/* BVN (read-only) */}
           <Text sx={{ color: '#065f46', fontSize: 18, fontWeight: 'bold', mb: 1 }}>BVN</Text>
           <Text>{bvn || 'Not provided'}</Text>
         </View>
@@ -122,19 +145,24 @@ export default function AccountScreen() {
         <Text sx={{ textAlign: 'center', mt: 40 }}>No user is currently logged in.</Text>
       )}
 
+      {/* Save Button */}
       <Pressable
         onPress={handleUpdate}
+        disabled={isSaving}
         style={sx({
-          bg: '#065f46',
+          bg: isSaving ? '#7dd3fc' : '#065f46',
           mt: 32,
           py: 14,
           borderRadius: 12,
           alignItems: 'center',
         })}
       >
-        <Text sx={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Update Info</Text>
+        <Text sx={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+          {isSaving ? 'Saving...' : 'Update Info'}
+        </Text>
       </Pressable>
 
+      {/* Log Out Button */}
       <Pressable
         onPress={handleLogout}
         style={sx({

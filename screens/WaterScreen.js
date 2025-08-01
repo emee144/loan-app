@@ -11,9 +11,12 @@ import {
 import LottieView from 'lottie-react-native';
 import { useEffect, useState } from 'react';
 import {
-  Alert, Dimensions,
+  Alert,
+  Dimensions,
+  Image,
   Pressable,
-  ScrollView, TextInput,
+  ScrollView,
+  TextInput,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { WebView } from 'react-native-webview';
@@ -73,6 +76,14 @@ export default function WaterScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+      {/* Loanwave Logo */}
+      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+        <Image
+          source={require('../assets/loanwave.png')}
+          style={{ width: 140, height: 40, resizeMode: 'contain' }}
+        />
+      </View>
+
       <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 24, textAlign: 'center' }}>
         Pay Water Bill
       </Text>
@@ -219,13 +230,25 @@ export default function WaterScreen() {
         waterHistory.map((item) => (
           <View
             key={item.id}
-            sx={{ bg: '#0f172a', borderRadius: 8, p: 12, mb: 8, borderLeftWidth: 4, borderLeftColor: '#10b981' }}
+            sx={{
+              bg: '#0f172a',
+              borderRadius: 8,
+              p: 12,
+              mb: 8,
+              borderLeftWidth: 4,
+              borderLeftColor: '#10b981',
+            }}
           >
             <Text sx={{ color: 'white' }}>Provider: {item.provider}</Text>
             <Text sx={{ color: 'white' }}>Account: {item.accountNumber}</Text>
             <Text sx={{ color: 'white' }}>Phone: {item.phone}</Text>
             <Text sx={{ color: 'white' }}>Amount: ₦{item.amount}</Text>
-            <Text sx={{ color: 'white' }}>Date: {new Date(item.createdAt?.toDate?.() || item.createdAt).toLocaleString()}</Text>
+            <Text sx={{ color: 'white' }}>
+              Date:{' '}
+              {new Date(
+                item.createdAt?.toDate?.() || item.createdAt
+              ).toLocaleString()}
+            </Text>
           </View>
         ))
       )}

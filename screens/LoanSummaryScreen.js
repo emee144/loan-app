@@ -56,38 +56,38 @@ const LoanSummaryScreen = () => {
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View sx={{ px: 16, py: 24 }}>
-        <Text sx={{ fontSize: 24, fontWeight: 'bold', color: 'green', mb: 24 }}>
+        <Text sx={{ fontSize: 24, fontWeight: 'bold', color: '#0f172a', mb: 24 }}>
           Loan Summary
         </Text>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Loan Amount</Text>
           <Text sx={{ color: 'white' }}>₦{Number(data.amount).toLocaleString()}</Text>
         </View>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Purpose</Text>
           <Text sx={{ color: 'white' }}>{data.loanPurpose || 'N/A'}</Text>
         </View>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Repayment Term</Text>
           <Text sx={{ color: 'white' }}>{data.duration} months</Text>
         </View>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Monthly Repayment</Text>
           <Text sx={{ color: 'white' }}>₦{Number(data.monthlyRepayment).toLocaleString()}</Text>
         </View>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Next of Kin</Text>
           <Text sx={{ color: 'white' }}>Name: {data.nextOfKinName}</Text>
           <Text sx={{ color: 'white' }}>Phone: {data.nextOfKinPhone}</Text>
           <Text sx={{ color: 'white' }}>Relationship: {data.nextOfKinRelationship}</Text>
         </View>
 
-        <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+        <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
           <Text sx={{ color: 'white', fontWeight: 'bold' }}>Bank Details</Text>
           <Text sx={{ color: 'white' }}>Bank: {data.bankName}</Text>
           <Text sx={{ color: 'white' }}>Account Number: {data.accountNumber}</Text>
@@ -95,7 +95,7 @@ const LoanSummaryScreen = () => {
         </View>
 
         {data.cardNumber && (
-          <View sx={{ bg: 'green', p: 16, borderRadius: 12, mb: 16 }}>
+          <View sx={{ bg: '#0f172a', p: 16, borderRadius: 12, mb: 16 }}>
             <Text sx={{ color: 'white', fontWeight: 'bold' }}>Card Info</Text>
             <Text sx={{ color: 'white' }}>
               Card Number: **** **** **** {data.cardNumber.slice(-4)}
@@ -107,7 +107,7 @@ const LoanSummaryScreen = () => {
         <Pressable
           onPress={handleSubmit}
           style={{
-            backgroundColor: '#004d40',
+            backgroundColor: '#15803d',
             padding: 16,
             marginTop: 10,
             borderRadius: 10,

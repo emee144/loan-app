@@ -28,10 +28,10 @@ export default function AppTabs() {
         },
       })}
     >
-      <Tab.Screen name="Loan" component={LoanScreen} />
+      <Tab.Screen name="Apply" component={ApplyStack} />
       <Tab.Screen name="Bills" component={BillsStack} />
       <Tab.Screen name="Account" component={AccountScreen} />
-      <Tab.Screen name="Apply" component={ApplyStack} />
+      <Tab.Screen name="Loan" component={LoanScreen} />
     </Tab.Navigator>
   );
 }

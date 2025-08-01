@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  Image,
   Pressable,
   ScrollView,
   TextInput,
@@ -95,6 +96,14 @@ export default function GovernmentLeviesScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+      {/* ✅ Loanwave Logo */}
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Image
+          source={require('../assets/loanwave.png')} // ← adjust path if needed
+          style={{ width: 150, height: 50, resizeMode: 'contain' }}
+        />
+      </View>
+
       <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16 }}>
         Government Levy Payment
       </Text>

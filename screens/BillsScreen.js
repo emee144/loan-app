@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View } from 'dripsy';
-import { Pressable, ScrollView } from 'react-native';
+import { Image, Pressable, ScrollView } from 'react-native';
 
 const bills = [
   { name: 'Airtime & Data', icon: 'phone-portrait-outline' },
@@ -37,13 +37,24 @@ export default function BillsScreen() {
     // dark navy background 
     <View sx={{ flex: 1, bg: '#0f172a' }}> 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
+        <Image
+          source={require('../assets/loanwave.png')}
+          style={{
+            width: 200,
+            height: 200,
+            alignSelf: 'center',
+            marginBottom: 12,
+          }}
+          resizeMode="contain"
+        />
+
         <Text
           sx={{
             fontSize: 26,
             fontWeight: 'bold',
             mb: 24,
             textAlign: 'center',
-            color: '#059669',
+            color: '#059669', 
           }}
         >
           Pay Bills

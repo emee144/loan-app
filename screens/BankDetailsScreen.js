@@ -3,7 +3,14 @@ import { Text } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, TextInput } from 'react-native';
+import {
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  TextInput,
+  View,
+} from 'react-native';
 
 export default function BankDetailsScreen() {
   const navigation = useNavigation();
@@ -31,6 +38,35 @@ export default function BankDetailsScreen() {
   const [expiryDate, setExpiryDate] = useState('');
   const [showCardFields, setShowCardFields] = useState(false);
 
+  const formatCardNumber = (text) => {
+    const cleaned = text.replace(/\D+/g, '').slice(0, 16); // only digits, max 16
+    const formatted = cleaned.replace(/(.{4})/g, '$1 ').trim(); // add space after every 4 digits
+    setCardNumber(formatted);
+  };
+
+  const detectCardType = (number) => {
+    const noSpaces = number.replace(/\s+/g, '');
+    if (/^4/.test(noSpaces)) return 'Visa';
+    if (/^5[1-5]/.test(noSpaces)) return 'MasterCard';
+    if (/^506/.test(noSpaces)) return 'Verve';
+    return 'Unknown';
+  };
+
+  const cardType = detectCardType(cardNumber);
+
+  const getCardLogo = () => {
+    switch (cardType) {
+      case 'Visa':
+        return require('../assets/visa.png');
+      case 'MasterCard':
+        return require('../assets/mastercard.png');
+      case 'Verve':
+        return require('../assets/verve.png');
+      default:
+        return null;
+    }
+  };
+
   const validate = () => {
     if (!bankName || !accountNumber || !bvn) {
       Alert.alert('Error', 'Please fill in all required fields');
@@ -48,12 +84,14 @@ export default function BankDetailsScreen() {
     }
 
     if (showCardFields) {
+      const rawCard = cardNumber.replace(/\s+/g, '');
+
       if (!cardNumber || !cvv || !expiryDate) {
         Alert.alert('Error', 'Please fill in all card fields');
         return false;
       }
 
-      if (cardNumber.length !== 16) {
+      if (rawCard.length !== 16) {
         Alert.alert('Error', 'Card number must be 16 digits');
         return false;
       }
@@ -78,8 +116,6 @@ export default function BankDetailsScreen() {
       Alert.alert('Error', 'No user is logged in');
       return;
     }
-
-    console.log('📌 BVN value:', bvn);
 
     try {
       await setDoc(
@@ -123,8 +159,8 @@ export default function BankDetailsScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 20 }}>
-      <Text variant="headline" sx={{ mb: 3 }}>
+    <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: '#0f172a', flexGrow: 1 }}>
+      <Text sx={{ fontSize: 26, fontWeight: 'bold', color: '#059669', textAlign: 'center', mb: 20 }}>
         Bank Details
       </Text>
 
@@ -132,7 +168,8 @@ export default function BankDetailsScreen() {
         placeholder="Bank Name"
         value={bankName}
         onChangeText={setBankName}
-        style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
+        placeholderTextColor="#94a3b8"
+        style={inputStyle}
       />
       <TextInput
         placeholder="Account Number"
@@ -140,7 +177,8 @@ export default function BankDetailsScreen() {
         onChangeText={setAccountNumber}
         keyboardType="numeric"
         maxLength={10}
-        style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
+        placeholderTextColor="#94a3b8"
+        style={inputStyle}
       />
       <TextInput
         placeholder="BVN"
@@ -148,49 +186,87 @@ export default function BankDetailsScreen() {
         onChangeText={setBvn}
         keyboardType="numeric"
         maxLength={11}
-        style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
+        placeholderTextColor="#94a3b8"
+        style={inputStyle}
       />
 
       <Pressable
         onPress={() => setShowCardFields(!showCardFields)}
-        style={{ marginBottom: 15, backgroundColor: '#ddd', padding: 10, borderRadius: 8 }}
+        style={{
+          marginBottom: 15,
+          backgroundColor: '#334155',
+          padding: 10,
+          borderRadius: 8,
+        }}
       >
-        <Text>{showCardFields ? 'Hide' : 'Add'} Card Info</Text>
+        <Text style={{ color: 'white', textAlign: 'center' }}>
+          {showCardFields ? 'Hide' : 'Add'} Card Info
+        </Text>
       </Pressable>
 
       {showCardFields && (
         <>
-          <TextInput
-            placeholder="Card Number"
-            value={cardNumber}
-            onChangeText={setCardNumber}
-            keyboardType="numeric"
-            maxLength={16}
-            style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
-          />
+          <View style={{ position: 'relative', marginBottom: 12 }}>
+            <TextInput
+              placeholder="Card Number"
+              value={cardNumber}
+              onChangeText={formatCardNumber}
+              keyboardType="numeric"
+              maxLength={19} // 16 digits + 3 spaces
+              placeholderTextColor="#94a3b8"
+              style={{ ...inputStyle, paddingRight: 48 }}
+            />
+            {cardType !== 'Unknown' && (
+              <View style={{ position: 'absolute', right: 12, top: 12 }}>
+                <Image
+                  source={getCardLogo()}
+                  style={{ width: 32, height: 20, resizeMode: 'contain' }}
+                />
+              </View>
+            )}
+          </View>
+
           <TextInput
             placeholder="CVV"
             value={cvv}
             onChangeText={setCvv}
             keyboardType="numeric"
             maxLength={3}
-            style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
+            placeholderTextColor="#94a3b8"
+            style={inputStyle}
           />
           <TextInput
             placeholder="Expiry Date (MM/YY)"
             value={expiryDate}
             onChangeText={setExpiryDate}
-            style={{ marginBottom: 10, padding: 10, backgroundColor: '#fff', borderRadius: 8 }}
+            placeholderTextColor="#94a3b8"
+            style={inputStyle}
           />
         </>
       )}
 
       <Pressable
         onPress={handleContinue}
-        style={{ backgroundColor: '#007AFF', padding: 15, borderRadius: 8 }}
+        style={{
+          backgroundColor: '#15803d',
+          padding: 15,
+          borderRadius: 8,
+          marginTop: 20,
+        }}
       >
-        <Text style={{ color: '#fff', textAlign: 'center' }}>Continue</Text>
+        <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
+          Continue
+        </Text>
       </Pressable>
     </ScrollView>
   );
 }
+
+const inputStyle = {
+  marginBottom: 12,
+  padding: 12,
+  backgroundColor: '#1e293b',
+  borderRadius: 8,
+  color: 'white',
+  fontSize: 16,
+};

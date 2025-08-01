@@ -1,16 +1,25 @@
 // AirtimeAndDataScreen.js
-import React, { useState, useEffect } from 'react';
-import {
-  ScrollView, TextInput, Pressable, Alert, ActivityIndicator, Dimensions,
-} from 'react-native';
-import { View, Text } from 'dripsy';
-import RNPickerSelect from 'react-native-picker-select';
+import { Text, View } from 'dripsy';
 import { getAuth } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, query, orderBy, getDocs,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
 } from 'firebase/firestore';
-import { WebView } from 'react-native-webview';
 import LottieView from 'lottie-react-native';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions, Image,
+  Pressable,
+  ScrollView, TextInput,
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { WebView } from 'react-native-webview';
 
 const NETWORKS = [
   { label: 'MTN', value: 'MTN' },
@@ -99,6 +108,17 @@ export default function AirtimeAndDataScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }} style={{ flex: 1, position: 'relative' }}>
+      <Image
+        source={require('../assets/loanwave.png')}
+        style={{
+          width: 50,
+          height: 50,
+          alignSelf: 'center',
+          marginBottom: 12,
+        }}
+        resizeMode="contain"
+      />
+
       <Text sx={{ fontSize: 40, fontWeight: 'bold', textAlign: 'center', mb: 16 }}>
         Buy Airtime or Data
       </Text>

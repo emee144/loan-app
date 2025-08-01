@@ -51,7 +51,7 @@ const LoanScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 3, color: 'white' }}>
+      <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 3, color: '#0f172a' }}>
         Your Loan Applications
       </Text>
 

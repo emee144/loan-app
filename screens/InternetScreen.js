@@ -11,9 +11,12 @@ import {
 import LottieView from 'lottie-react-native';
 import { useEffect, useState } from 'react';
 import {
-  Alert, Dimensions,
+  Alert,
+  Dimensions,
+  Image,
   Pressable,
-  ScrollView, TextInput,
+  ScrollView,
+  TextInput,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { WebView } from 'react-native-webview';
@@ -106,6 +109,14 @@ export default function InternetScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+      {/* LoanWave Logo */}
+      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+        <Image
+          source={require('../assets/loanwave.png')}
+          style={{ width: 120, height: 40, resizeMode: 'contain' }}
+        />
+      </View>
+
       <Text sx={{ fontSize: 24, fontWeight: 'bold', mb: 24, textAlign: 'center' }}>
         Internet Subscription
       </Text>
@@ -152,7 +163,7 @@ export default function InternetScreen() {
       <Pressable
         onPress={handlePayment}
         style={{
-          backgroundColor: 'green',
+          backgroundColor: '#0f172a',
           borderRadius: 8,
           padding: 16,
           marginTop: 20
@@ -264,7 +275,7 @@ export default function InternetScreen() {
           <View
             key={item.id}
             sx={{
-              bg: 'green',
+              bg: '#0f172a',
               borderRadius: 8,
               p: 12,
               mb: 8,

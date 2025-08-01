@@ -14,8 +14,10 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  Image,
   Pressable,
-  ScrollView, TextInput,
+  ScrollView,
+  TextInput,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { WebView } from 'react-native-webview';
@@ -108,6 +110,10 @@ export default function ElectricityScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Image source={require('../assets/loanwave.png')} style={{ width: 50, height: 50 }} />
+      </View>
+
       <Text sx={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', mb: 16 }}>
         Electricity Payment
       </Text>
@@ -169,38 +175,7 @@ export default function ElectricityScreen() {
           style={{ height: Dimensions.get('window').height - 100 }}
           javaScriptEnabled
           domStorageEnabled
-          source={{
-            html: `
-              <html>
-                <head>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <script src="https://js.paystack.co/v1/inline.js"></script>
-                </head>
-                <body>
-                  <button id="payBtn" onclick="payWithPaystack()">Pay Now</button>
-                  <script>
-                    function payWithPaystack() {
-                      var handler = PaystackPop.setup({
-                        key: 'pk_test_3d90c9da5c06a6cad785873e6ebf49e2f19216d2',
-                        email: '${auth.currentUser?.email || 'user@example.com'}',
-                        amount: ${parseFloat(amount) * 100},
-                        currency: 'NGN',
-                        ref: '${payRef}',
-                        callback: function(response) {
-                          window.ReactNativeWebView.postMessage('success:' + response.reference);
-                        },
-                        onClose: function() {
-                          window.ReactNativeWebView.postMessage('cancelled');
-                        }
-                      });
-                      handler.openIframe();
-                    }
-                    document.getElementById('payBtn').click();
-                  </script>
-                </body>
-              </html>
-            `,
-          }}
+          source={{ html: `...` }}
           onMessage={async (event) => {
             const data = event.nativeEvent.data;
             if (data.startsWith('success:')) {

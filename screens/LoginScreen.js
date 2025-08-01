@@ -1,44 +1,110 @@
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Pressable, Text, View } from 'dripsy';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Alert, Image, View as RNView, TextInput } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  View as RNView,
+  TextInput,
+} from 'react-native';
 import LoanWaveLogo from '../assets/loanwave.png';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { useBiometricSession } from '../hooks/useBiometricSession';
 
 export default function LoginScreen({ navigation }) {
+  const {
+    isLoggedIn,
+    isLoading,
+    isBiometricAvailable,
+    hasEnrolled,
+    saveSession,
+    unlockWithBiometrics,
+    clearSession,
+  } = useBiometricSession();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secure, setSecure] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
+  const [doingLogin, setDoingLogin] = useState(false);
 
   useEffect(() => {
-    const loadSession = async () => {
-      const storedSession = await AsyncStorage.getItem('userSession');
-      if (storedSession) {
-        const { email: savedEmail } = JSON.parse(storedSession);
-        setEmail(savedEmail);
-        setRememberMe(true);
+    if (isLoading) return;
+
+    const tryAutoBiometricLogin = async () => {
+      const success = await unlockWithBiometrics();
+      if (success) {
+        const user = auth.currentUser;
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            console.log('🔐 Loaded profile:', userData.fullName);
+          }
+        }
+
+        Alert.alert('Unlocked', 'Logged in with biometrics.');
+        navigation.replace('AppTabs');
       }
     };
-    loadSession();
-  }, []);
+
+    tryAutoBiometricLogin();
+  }, [isLoading]);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Input required', 'Please enter email and password.');
+      return;
+    }
+
+    setDoingLogin(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await userCredential.user.getIdToken();
+
       if (rememberMe) {
-        await AsyncStorage.setItem('userSession', JSON.stringify({ email }));
+        await saveSession(email, password);
       } else {
-        await AsyncStorage.removeItem('userSession');
+        await clearSession();
       }
-      Alert.alert('Login Successful');
+
+      Alert.alert('Success', 'Logged in. Next time you can use biometrics.');
       navigation.replace('AppTabs');
-    } catch (error) {
-      Alert.alert('Login Failed', error.message);
+    } catch (err) {
+      Alert.alert('Login Error', err.message || String(err));
+    } finally {
+      setDoingLogin(false);
     }
   };
+
+  const handleBiometric = async () => {
+    const ok = await unlockWithBiometrics();
+    if (ok) {
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log('🔐 Loaded profile:', userData.fullName);
+        }
+      }
+      Alert.alert('Unlocked', 'Logged in with biometrics.');
+      navigation.replace('AppTabs');
+    } else {
+      Alert.alert('Failed', 'Biometric login failed or no session saved.');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View sx={{ flex: 1, justifyContent: 'center', px: 24, bg: '#0f172a' }}>
+        <ActivityIndicator size="large" color="#ffffff" />
+      </View>
+    );
+  }
 
   return (
     <View sx={{ flex: 1, px: 24, justifyContent: 'center', bg: '#0f172a' }}>
@@ -57,7 +123,6 @@ export default function LoginScreen({ navigation }) {
         Welcome back!
       </Text>
 
-      {/* Email Input */}
       <CustomInput
         placeholder="Email address"
         value={email}
@@ -66,7 +131,6 @@ export default function LoginScreen({ navigation }) {
         autoCapitalize="none"
       />
 
-      {/* Password with toggle icon */}
       <RNView style={inputWrapper}>
         <TextInput
           placeholder="Password"
@@ -82,7 +146,6 @@ export default function LoginScreen({ navigation }) {
         </Pressable>
       </RNView>
 
-      {/* Remember Me */}
       <Pressable onPress={() => setRememberMe(!rememberMe)} sx={{ flexDirection: 'row', alignItems: 'center', mb: 16 }}>
         <Ionicons
           name={rememberMe ? 'checkbox' : 'square-outline'}
@@ -90,20 +153,35 @@ export default function LoginScreen({ navigation }) {
           color="#38bdf8"
           style={{ marginRight: 8 }}
         />
-        <Text sx={{ color: '#cbd5e1' }}>Remember Me</Text>
+        <Text sx={{ color: '#cbd5e1' }}>Remember Me (enable biometrics next time)</Text>
       </Pressable>
 
-      {/* Login Button */}
-      <Pressable onPress={handleLogin} sx={button}>
-        <Text sx={buttonText}>Login</Text>
+      <Pressable onPress={handleLogin} sx={button} disabled={doingLogin}>
+        <Text sx={buttonText}>{doingLogin ? 'Logging in...' : 'Login'}</Text>
       </Pressable>
 
-      {/* Signup Navigation */}
+      {isBiometricAvailable && hasEnrolled && (
+        <>
+          <View style={{ height: 12 }} />
+          <Pressable onPress={handleBiometric} sx={{ ...button, backgroundColor: '#10b981' }}>
+            <Text sx={buttonText}>Login with Biometrics</Text>
+          </Pressable>
+        </>
+      )}
+
       <Pressable onPress={() => navigation.navigate('Signup')} sx={{ mt: 16 }}>
         <Text sx={{ color: '#38bdf8', textAlign: 'center' }}>
           Don't have an account? Sign up
         </Text>
       </Pressable>
+
+      <View style={{ marginTop: 20 }}>
+        <Pressable onPress={clearSession}>
+          <Text sx={{ color: '#f87171', textAlign: 'center', fontSize: 12 }}>
+            Clear saved biometric session
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
